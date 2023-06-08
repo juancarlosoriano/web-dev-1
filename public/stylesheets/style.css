@@ -9,7 +9,12 @@ body {
   padding: 0;
   margin: 0;
   list-style: none;
+  background-color: #555;
   font-family: "Helvatica Neue", Helvetica, Arial, sans-serif;
+}
+
+main {
+  background-color: white;
 }
 
 a {
@@ -78,6 +83,14 @@ a:hover {
   padding-top: 20px;
 }
 
+.mission-statement {
+  padding: 20px 0;
+}
+
+.mission-statement-text {
+  line-height: 1.5rem;
+}
+
 /* Font Styles */
 h1 {
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -88,6 +101,7 @@ h1 {
 
 @media only screen and (max-width: 980px) {
   .container {
-    padding: 2% 5%;
+    margin: 2% 5%;
+    width: auto;
   }
 }
