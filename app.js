@@ -5,23 +5,41 @@ Student Number: 301262744
 Date: June 7, 2023
 */
 
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+let createError = require("http-errors");
+let express = require("express");
+let path = require("path");
+let cookieParser = require("cookie-parser");
+let logger = require("morgan");
+let mongoose = require("mongoose");
 
-var indexRouter = require("./routes/index");
-var aboutMeRouter = require("./routes/about-me");
-var projectsRouter = require("./routes/projects");
-var servicesRouter = require("./routes/services");
-var contactRouter = require("./routes/contact");
+/* Modules for authentication */
+let passport = require("passport");
+let session = require("express-session");
+let passportLocal = require("passport-local");
+let LocalStrategy = passportLocal.Strategy;
+let flash = require("connect-flash");
 
-var app = express();
+let indexRouter = require("./routes/index");
+let contactRouter = require("./routes/contact");
+
+let app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+// Set up mongoose
+var db = require("./config/db");
+
+// Mongoose connected to the URI
+mongoose.connect(db.URI);
+
+// Bind mongoose to connection
+let mongoDB = mongoose.connection;
+mongoDB.on("error", console.error.bind(console, "Connection error:"));
+mongoDB.once("open", () => {
+  console.log("Connected to MongoDB...");
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -29,10 +47,51 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+/* Configure Express sessions */
+app.use(
+  session({
+    secret: "keyboard cat",
+    saveUninitialized: false,
+    resave: false,
+  })
+);
+
+/* Initialize flash */
+app.use(flash());
+
+/* Configure Passport */
+app.use(passport.initialize());
+app.use(passport.session());
+
+/* Passport User Configuration */
+
+// Create User model instance
+let userModel = require("./models/user");
+let User = userModel.User;
+
+// Set local strategy
+// passport.use(new LocalStrategy(User.authenticate()));
+
+// const local = new LocalStrategy((username, password, done) => {
+//   User.findOne({ username })
+//     .then((user) => {
+//       if (!user || !user.validPassword(password)) {
+//         done(null, false, { message: "Invalid username/password" });
+//       } else {
+//         done(null, user);
+//       }
+//     })
+//     .catch((e) => done(e));
+// });
+// passport.use("local", local);
+
+passport.use(new LocalStrategy(User.authenticate()));
+
+// Serialize and Deserialize User info
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use("/", indexRouter);
-app.use("/about-me", aboutMeRouter);
-app.use("/projects", projectsRouter);
-app.use("/services", servicesRouter);
 app.use("/contact", contactRouter);
 
 // catch 404 and forward to error handler
@@ -50,5 +109,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+// Mongoose Model
+//const User = mongoose.model('User', { name: String, password: String });
 
 module.exports = app;

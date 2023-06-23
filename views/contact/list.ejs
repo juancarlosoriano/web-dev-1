@@ -1,0 +1,55 @@
+<!-- 
+Filename: contacts.ejs
+Student Name: Juan Carlo Soriano
+Student Number: 301262744
+Date: June 18, 2023 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacts</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <%- include('../partials/navbar.ejs') %>
+    <main class="main-content">
+      <section class="container contacts">
+        <h1>Business Contacts List</h1>
+        <table class="contact-table">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Number</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <% contacts.forEach(contact=> { %>
+          <tr class="contact">
+            <td><%= contact.name %></td>
+            <td><%= contact.email %></td>
+            <td><%= contact.number %></td>
+            <td class="table-button-col">
+              <a
+                class="btn-contact contact-update"
+                href="/contact/edit/<%= contact._id %>"
+                >Update</a
+              >
+            </td>
+            <td class="table-button-col">
+              <a
+                class="btn-contact contact-delete"
+                href="/contact/delete/<%= contact._id %>"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          <% }); %>
+        </table>
+      </section>
+    </main>
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

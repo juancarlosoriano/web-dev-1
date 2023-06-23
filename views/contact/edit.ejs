@@ -1,0 +1,47 @@
+<!-- 
+Filename: edit.ejs
+Student Name: Juan Carlo Soriano
+Student Number: 301262744
+Date: June 7, 2023 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <%- include('../partials/navbar.ejs') %>
+    <main class="main-content">
+      <section class="container update-contact">
+        <form
+          class="update-contact-form"
+          action="/contact/edit/<%= contact._id %>"
+          method="POST"
+        >
+          <label for="name"> Name: </label>
+          <input name="name" id="name" value="<%= contact.name %>" />
+          <label for="email"> Email: </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value="<%= contact.email %>"
+          />
+          <label for="number"> Number: </label>
+          <input name="number" id="number" value="<%= contact.number %>" />
+          <input id="update" type="submit" value="Update" />
+          <a
+            class="btn-contact contact-delete"
+            href="/contact/delete/<%= contact._id %>"
+            >Delete</a
+          >
+        </form>
+      </section>
+    </main>
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>
