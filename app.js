@@ -32,7 +32,9 @@ app.set("view engine", "ejs");
 var db = require("./config/db");
 
 // Mongoose connected to the URI
-//mongoose.connect(db.URI);
+// mongoose.connect(
+//   "mongodb+srv://jc-admin:<>@cluster1.mrkhect.mongodb.net/?retryWrites=true&w=majority"
+// );
 mongoose.connect(process.env.MONGO_URI);
 
 // Bind mongoose to connection

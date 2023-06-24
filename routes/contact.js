@@ -18,8 +18,9 @@ const requireAuth = (req, res, next) => {
   // Check if user is logged in
   if (!req.isAuthenticated()) {
     res.redirect("/login");
+  } else {
+    next();
   }
-  next();
 };
 
 /* GET contacts page. */
@@ -60,7 +61,7 @@ router.post("/edit/:id", requireAuth, async (req, res, next) => {
     email: req.body.email,
   });
 
-  Contact.updateOne({ _id: id }, requireAuth, updatedContact)
+  Contact.updateOne({ _id: id }, updatedContact)
     .then(async () => {
       res.redirect("/contact");
     })

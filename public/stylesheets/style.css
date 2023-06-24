@@ -377,6 +377,7 @@ h1 {
 }
 
 #username,
+#name,
 #email,
 #number {
   width: 100%;
