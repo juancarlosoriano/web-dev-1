@@ -32,7 +32,8 @@ app.set("view engine", "ejs");
 var db = require("./config/db");
 
 // Mongoose connected to the URI
-mongoose.connect(db.URI);
+//mongoose.connect(db.URI);
+mongoose.connect(process.env.MONGO_URI);
 
 // Bind mongoose to connection
 let mongoDB = mongoose.connection;
@@ -70,21 +71,6 @@ let userModel = require("./models/user");
 let User = userModel.User;
 
 // Set local strategy
-// passport.use(new LocalStrategy(User.authenticate()));
-
-// const local = new LocalStrategy((username, password, done) => {
-//   User.findOne({ username })
-//     .then((user) => {
-//       if (!user || !user.validPassword(password)) {
-//         done(null, false, { message: "Invalid username/password" });
-//       } else {
-//         done(null, user);
-//       }
-//     })
-//     .catch((e) => done(e));
-// });
-// passport.use("local", local);
-
 passport.use(new LocalStrategy(User.authenticate()));
 
 // Serialize and Deserialize User info
@@ -109,8 +95,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-// Mongoose Model
-//const User = mongoose.model('User', { name: String, password: String });
 
 module.exports = app;

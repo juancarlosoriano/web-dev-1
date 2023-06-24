@@ -58,7 +58,6 @@ router.get("/services", function (req, res, next) {
 /* GET login page. */
 router.get("/login", function (req, res, next) {
   // Check if the user is alreadt logged in
-  console.log("isAuthenticated?", req.isAuthenticated());
   if (!req.user) {
     res.render("auth/login", {
       messages: req.flash("loginMessage"),
@@ -84,7 +83,6 @@ router.post("/login", function (req, res, next) {
         if (err) {
           next(err);
         } else {
-          console.log(req.isAuthenticated());
           res.redirect("/");
         }
       });

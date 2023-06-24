@@ -17,9 +17,7 @@ let passport = require("passport");
 const requireAuth = (req, res, next) => {
   // Check if user is logged in
   if (!req.isAuthenticated()) {
-    console.log("requireAuth method fired.");
     res.redirect("/login");
-    console.log("requireAuth method redirected.");
   }
   next();
 };
